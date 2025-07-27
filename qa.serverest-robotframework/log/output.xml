@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.8.9 on win32)" generated="20250727 20:02:39.581" rpa="false" schemaversion="4">
+<suite id="s1" name="User" source="C:\estudos\qa.serverest-robotframework\tests\user">
+<suite id="s1-s1" name="createUser" source="C:\estudos\qa.serverest-robotframework\tests\user\createUser.robot">
+<test id="s1-s1-t1" name="Create User Successfully" line="8">
+<kw name="Create Valid User" library="dataUser">
+<var>${user}</var>
+<kw name="Email" library="FakerLibrary">
+<var>${email}</var>
+<msg timestamp="20250727 20:02:40.202" level="INFO">${email} = jeffreyperez@example.com</msg>
+<status status="PASS" starttime="20250727 20:02:40.201" endtime="20250727 20:02:40.202"/>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<var>${user}</var>
+<arg>nome=John Doe</arg>
+<arg>email=${email}</arg>
+<arg>password=123</arg>
+<arg>administrador=true</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<msg timestamp="20250727 20:02:40.203" level="INFO">${user} = {'nome': 'John Doe', 'email': 'jeffreyperez@example.com', 'password': '123', 'administrador': 'true'}</msg>
+<status status="PASS" starttime="20250727 20:02:40.202" endtime="20250727 20:02:40.203"/>
+</kw>
+<return>
+<value>${user}</value>
+<status status="PASS" starttime="20250727 20:02:40.203" endtime="20250727 20:02:40.203"/>
+</return>
+<msg timestamp="20250727 20:02:40.203" level="INFO">${user} = {'nome': 'John Doe', 'email': 'jeffreyperez@example.com', 'password': '123', 'administrador': 'true'}</msg>
+<status status="PASS" starttime="20250727 20:02:40.200" endtime="20250727 20:02:40.203"/>
+</kw>
+<kw name="Create User" library="keywordUser">
+<arg>${user}</arg>
+<kw name="Create Session" library="RequestsLibrary">
+<arg>user</arg>
+<arg>${BASE_URL}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20250727 20:02:40.203" level="INFO">Creating Session using : alias=user, url=https://serverest.dev, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20250727 20:02:40.203" endtime="20250727 20:02:40.203"/>
+</kw>
+<kw name="POST On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>user</arg>
+<arg>/usuarios</arg>
+<arg>json=${user}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<msg timestamp="20250727 20:02:40.609" level="INFO">POST Request : url=https://serverest.dev/usuarios 
+ path_url=/usuarios 
+ headers={'User-Agent': 'python-requests/2.32.4', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '101', 'Content-Type': 'application/json'} 
+ body=b'{"nome": "John Doe", "email": "jeffreyperez@example.com", "password": "123", "administrador": "true"}' 
+ </msg>
+<msg timestamp="20250727 20:02:40.609" level="INFO">POST Response : url=https://serverest.dev/usuarios 
+ status=201, reason=Created 
+ headers={'access-control-allow-origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'content-type': 'application/json; charset=utf-8', 'x-cloud-trace-context': '6018d0d5cad4ce29a4bed59fac409f53;o=1', 'date': 'Sun, 27 Jul 2025 23:02:39 GMT', 'server': 'Google Frontend', 'Content-Length': '82'} 
+ body={
+    "message": "Cadastro realizado com sucesso",
+    "_id": "ZjD4uRtv00nBarUK"
+} 
+ </msg>
+<msg timestamp="20250727 20:02:40.609" level="INFO">c:\users\tatiana utrera\appdata\local\programs\python\python38\lib\site-packages\urllib3\connectionpool.py:1099: InsecureRequestWarning: Unverified HTTPS request is being made to host 'serverest.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg timestamp="20250727 20:02:40.610" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<status status="PASS" starttime="20250727 20:02:40.203" endtime="20250727 20:02:40.610"/>
+</kw>
+<kw name="Set Test Variable" library="BuiltIn">
+<arg>${response}</arg>
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<msg timestamp="20250727 20:02:40.610" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<status status="PASS" starttime="20250727 20:02:40.610" endtime="20250727 20:02:40.610"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${response.json()}[message]</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20250727 20:02:40.610" endtime="20250727 20:02:40.611"/>
+</kw>
+<status status="PASS" starttime="20250727 20:02:40.203" endtime="20250727 20:02:40.611"/>
+</kw>
+<kw name="Should Be Create User With Successfully" library="keywordUser">
+<arg>202</arg>
+<arg>Cadastro realizado com sucesso</arg>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>${status_code}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20250727 20:02:40.612" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<msg timestamp="20250727 20:02:40.613" level="FAIL">201 != 202</msg>
+<status status="FAIL" starttime="20250727 20:02:40.612" endtime="20250727 20:02:40.613"/>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<arg>${response.json()}[message]</arg>
+<arg>${message}</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="NOT RUN" starttime="20250727 20:02:40.613" endtime="20250727 20:02:40.613"/>
+</kw>
+<status status="FAIL" starttime="20250727 20:02:40.612" endtime="20250727 20:02:40.613"/>
+</kw>
+<doc>Test to create a user with valid Data</doc>
+<status status="FAIL" starttime="20250727 20:02:40.200" endtime="20250727 20:02:40.614">201 != 202</status>
+</test>
+<doc>Tests for user creation functionality</doc>
+<status status="FAIL" starttime="20250727 20:02:39.601" endtime="20250727 20:02:40.616"/>
+</suite>
+<status status="FAIL" starttime="20250727 20:02:39.583" endtime="20250727 20:02:40.617"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" skip="0" id="s1" name="User">User</stat>
+<stat pass="0" fail="1" skip="0" id="s1-s1" name="createUser">User.createUser</stat>
+</suite>
+</statistics>
+<errors>
+<msg timestamp="20250727 20:02:39.604" level="WARN">Imported resource file 'C:\estudos\qa.serverest-robotframework\resources\keywords.resource' is empty.</msg>
+</errors>
+</robot>
